@@ -1,0 +1,10 @@
+{
+  "name": "AppUbicacion",
+  "description": "Aplicacion que permite trakear moviles con GPS",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.12.0",
+    "express": "4.9.8",
+    "serve-favicon": "^2.2.0"
+  }
+}

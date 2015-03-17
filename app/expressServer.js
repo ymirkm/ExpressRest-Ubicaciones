@@ -1,7 +1,8 @@
-var express = require('express');
+var express 	= require('express');
 var middlewares = require('./middlewares/admin'); 
-var mongoose = require('mongoose');
-var Ubicacion = require('../db/ubicacion');		//Schema de Ubicacion
+var swig 		= require('swig');
+var mongoose 	= require('mongoose');
+var Ubicacion 	= require('../db/ubicacion');		//Schema de Ubicacion
 
 var ExpressServer = function(config){
 	config = config || {};
@@ -12,6 +13,13 @@ var ExpressServer = function(config){
 		this.expressServer.use(middlewares[middleware]);
 	}
 
+
+	/************************************************************************** Template engine ****/
+	this.expressServer.engine('html', swig.renderFile);
+	this.expressServer.set('view engine', 'html');
+	this.expressServer.set('views', __dirname + '/website/views/templates');
+
+
 	/************************************************************************** Conexión base de datos ****/
 	mongoose.connect('mongodb://localhost/ubicaciones', function(err, res){
 		if(err){
@@ -20,8 +28,10 @@ var ExpressServer = function(config){
 	});
 
 	this.expressServer.get('/saluda/', function(err, res){
-		res.send('Servidor saludando desde /saluda/ por metodo GET');
+		res.render('saluda', {nombre:'Ymir :)'});
 	});
+
+
 	/************************************************************************** Obtener todas las ubicaciones guardadas ****/
 	this.expressServer.get('/ubicaciones/', function(req, res, next){
 		Ubicacion.find(function(err,ubicaciones){
@@ -30,6 +40,8 @@ var ExpressServer = function(config){
 			}else{ res.send('Error en GET ' + err); }
 		});
 	});
+
+
 	/************************************************************************** Guardar ubicacion enviada por URL(get) ****/
 	this.expressServer.get('/add_ubicacion/:ubicacion', function(req, res){
 		var paramNUbicaion = req.params.ubicacion;
@@ -45,14 +57,9 @@ var ExpressServer = function(config){
 	});
 
 	this.expressServer.get(/add_ubicacion/, function(req, res){
-		var html = '<form action="/add_ubicacion/" method="post">' +
-               'Enter your name:' +
-               '<input type="text" name="ubicacion" />' +
-               '<br>' +
-               '<button type="submit">Submit</button>' +
-            '</form>';
-		res.send(html);
+		res.render('add_ubicacion', {});
 	});
+
 
 	/************************************************************************** Guardar ubicacion enviada por (post) ****/
 	this.expressServer.post('/add_ubicacion/', function(req, res){

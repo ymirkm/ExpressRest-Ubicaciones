@@ -54,19 +54,17 @@ var ExpressServer = function(config){
 		res.send(html);
 	});
 
+	/************************************************************************** Guardar ubicacion enviada por (post) ****/
 	this.expressServer.post('/add_ubicacion/', function(req, res){
-		/*console.log('pepe');
 		var objSave = new Ubicacion({
-			nombre: 'Pepe'
+			nombre: req.body.ubicacion
 		});
 		objSave.save(function(err){
 			if(!err){
 				console.log('Ubicacion guardada con exito');
 			}else { console.log('Error al guardar nueva ubicacion ' + err); }
 		});
-		res.send(objSave);*/
-		console.log(req.body);
-		res.send('Nombre: ' + req.body.ubicacion);
+		res.send(objSave);
 	});
 };
 module.exports = ExpressServer;

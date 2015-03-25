@@ -18,6 +18,7 @@ var ExpressServer = function(config){
 	this.expressServer.engine('html', swig.renderFile);
 	this.expressServer.set('view engine', 'html');
 	this.expressServer.set('views', __dirname + '/website/views/templates');
+	this.expressServer.set('view cache', false);
 
 
 	/************************************************************************** Conexión base de datos ****/
@@ -49,9 +50,7 @@ var ExpressServer = function(config){
 			nombre: paramNUbicaion
 		});
 		objSave.save(function(err){
-			if(!err){
-				console.log('Ubicacion guardada con exito');
-			}else { console.log('Error al guardar nueva ubicacion ' + err); }
+			if(err){ console.log('Error al guardar nueva ubicacion ' + err); }
 		});
 		res.send(objSave);
 	});
@@ -66,11 +65,11 @@ var ExpressServer = function(config){
 		var objSave = new Ubicacion({
 			nombre: req.body.ubicacion
 		});
-		objSave.save(function(err){
-			if(!err){
-				console.log('Ubicacion guardada con exito');
-			}else { console.log('Error al guardar nueva ubicacion ' + err); }
-		});
+		// objSave.save(function(err){
+		// 	if(!err){
+		// 		console.log('Ubicacion guardada con exito');
+		// 	}else { console.log('Error al guardar nueva ubicacion ' + err); }
+		// });
 		res.send(objSave);
 	});
 };

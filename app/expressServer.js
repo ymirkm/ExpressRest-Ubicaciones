@@ -29,7 +29,7 @@ var ExpressServer = function(config){
 	});
 
 	this.expressServer.get('/saluda/', function(err, res){
-		res.render('saluda', {saludo:'Hola ;)'});
+		res.render('saluda', {saludo:'ha ;)'});
 	});
 
 

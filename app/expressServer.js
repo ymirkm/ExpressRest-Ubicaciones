@@ -17,7 +17,7 @@ var ExpressServer = function(config){
 	/************************************************************************** Template engine ****/
 	this.expressServer.engine('html', swig.renderFile);
 	this.expressServer.set('view engine', 'html');
-	this.expressServer.set('views', __dirname + '/website/views/templates');
+	this.expressServer.set('views', __dirname + 'ubicaciones/website/views/templates');
 	this.expressServer.set('view cache', false);
 
 
@@ -29,7 +29,7 @@ var ExpressServer = function(config){
 	});
 
 	this.expressServer.get('/saluda/', function(err, res){
-		res.render('saluda', {nombre:'Ymir :)'});
+		res.render('saluda', {saludo:'Hola ;)'});
 	});
 
 

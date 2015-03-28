@@ -6,5 +6,7 @@ var app = new expressServer();
 
 var server = http.createServer(app.expressServer);
 server.listen(config.port, function(err){
-	console.log('Servidor corriendo desde el puerto', config.port);
+	if(!err){
+		console.log('Server running on port:', config.port); 
+	}else { console.log('Error trying to run server: ', err); }
 });

@@ -2,13 +2,13 @@ var express 	= require('express');
 var middlewares = require('./middlewares/admin'); 
 var swig 		= require('swig');
 var mongoose 	= require('mongoose');
-var Ubicacion 	= require('../db/ubicacion');		//Schema de Ubicacion
+var Ubicacion 	= require('../db/ubicacion');		//Location Schema
 
 var ExpressServer = function(config){
 	config = config || {};
 
 	this.expressServer = express();
-	/************************************************************************** Carga de Middlewares ****/
+	/************************************************************************** Load Middlewares ****/
 	for(var middleware in middlewares){
 		this.expressServer.use(middlewares[middleware]);
 	}
@@ -21,10 +21,10 @@ var ExpressServer = function(config){
 	this.expressServer.set('view cache', false);
 
 
-	/************************************************************************** Conexión base de datos ****/
+	/************************************************************************** Database Conection ****/
 	mongoose.connect('mongodb://localhost/ubicaciones', function(err, res){
 		if(err){
-			console.log('Error estableciendo conexion con la base de datos ' + err);
+			console.log('Error establishing conection with database  ' + err);
 		}
 	});
 
@@ -33,24 +33,24 @@ var ExpressServer = function(config){
 	});
 
 
-	/************************************************************************** Obtener todas las ubicaciones guardadas ****/
+	/************************************************************************** GET all locations ****/
 	this.expressServer.get('/ubicaciones/', function(req, res, next){
 		Ubicacion.find(function(err,ubicaciones){
 			if(!err){
 				res.send(ubicaciones);
-			}else{ res.send('Error en GET ' + err); }
+			}else{ res.send('Error on GET ' + err); }
 		});
 	});
 
 
-	/************************************************************************** Guardar ubicacion enviada por URL(get) ****/
+	/************************************************************************** GET save a location ****/
 	this.expressServer.get('/add_ubicacion/:ubicacion', function(req, res){
 		var paramNUbicaion = req.params.ubicacion;
 		var objSave = new Ubicacion({
 			nombre: paramNUbicaion
 		});
 		objSave.save(function(err){
-			if(err){ console.log('Error al guardar nueva ubicacion ' + err); }
+			if(err){ console.log('Error saving sended location ' + err); }
 		});
 		res.send(objSave);
 	});
@@ -60,16 +60,16 @@ var ExpressServer = function(config){
 	});
 
 
-	/************************************************************************** Guardar ubicacion enviada por (post) ****/
+	/************************************************************************** POST save a location ****/
 	this.expressServer.post('/add_ubicacion/', function(req, res){
 		var objSave = new Ubicacion({
 			nombre: req.body.ubicacion
 		});
-		// objSave.save(function(err){
-		// 	if(!err){
-		// 		console.log('Ubicacion guardada con exito');
-		// 	}else { console.log('Error al guardar nueva ubicacion ' + err); }
-		// });
+		objSave.save(function(err){
+		 	if(!err){
+		 		console.log('Location saved successfully');
+			}else { console.log('Error saving sended location ' + err); }
+		});
 		res.send(objSave);
 	});
 };

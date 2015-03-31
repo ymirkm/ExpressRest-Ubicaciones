@@ -3,6 +3,7 @@ var middlewares = require('./middlewares/admin');
 var swig 		= require('swig');
 var mongoose 	= require('mongoose');
 var Ubicacion 	= require('../db/ubicacion');		//Location Schema
+var geolib		= require('geolib');
 
 var ExpressServer = function(config){
 	config = config || {};
@@ -55,6 +56,7 @@ var ExpressServer = function(config){
 		res.send(objSave);
 	});
 
+	/************************************************************************** GET render view add_ubicacion.html ****/
 	this.expressServer.get(/add_ubicacion/, function(req, res){
 		res.render('add_ubicacion', {});
 	});
@@ -72,5 +74,21 @@ var ExpressServer = function(config){
 		});
 		res.send(objSave);
 	});
+
+	/************************************************************************** GET distance between two points using geolib.js ****/
+	this.expressServer.get('/distance/', function(req, res){
+		var a = geolib.getDistance({
+			latitude: -0.935897, longitude: -78.614034
+		},{
+			latitude: -0.93399, longitude: -78.61416
+		});
+		res.send('Distancia entre el local y el municipio: ' + a + ' mts');
+	});
+
+	/************************************************************************** GET render view get_distance.html giving one point ****/
+	this.expressServer.get('/get_distance/', function(req, res){
+
+	});
+
 };
 module.exports = ExpressServer;

@@ -82,12 +82,38 @@ var ExpressServer = function(config){
 		},{
 			latitude: -0.93399, longitude: -78.61416
 		});
-		res.send('Distancia entre el local y el municipio: ' + a + ' mts');
+		res.send('Distancia: ' + a + ' mts');
 	});
 
-	/************************************************************************** GET render view get_distance.html giving one point ****/
-	this.expressServer.get('/get_distance/', function(req, res){
+	/************************************************************************** GET render view get_distance.html given one point ****/
+	// this.expressServer.get('/get_distance/', function(req, res){
+	// 	res.render('get_distance', {});
+	// });
+//	-0.93399
+//	-78.61416
+	/************************************************************************** POST distance between two points given one of them ****/
+	this.expressServer.post('/get_distance/', function(req, res){
+		var lat = req.body.latitud;
+		var lon = req.body.longitud;
+		var distance = geolib.getDistance({
+			latitude: -0.935897, longitude: -78.614034
+		},{
+			latitude: lat, longitude: lon
+		});
+		res.send('Distancia: ' + distance + ' mts');
+	});
 
+	/************************************************************************** GET distance between two points given one of them ****/
+	this.expressServer.get('/get_distance/', function(req, res){
+		var lat = req.query.lat;
+		var lon = req.query.lon;
+		var distance = geolib.getDistance({
+			latitude: -0.935897, longitude: -78.614034
+		},{
+			latitude: lat, longitude: lon
+		});
+		debugger;
+		res.send('Distancia: ' + distance + ' mts');
 	});
 
 };

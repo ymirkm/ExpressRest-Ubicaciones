@@ -108,6 +108,14 @@ var ExpressServer = function(config){
 		var lon = req.query.lon;
 		var distance = geolib.getDistance({ latitude: location_test.LocalHenry.lat, longitude: location_test.LocalHenry.lon },
 										  { latitude: lat, longitude: lon });
+		var objSave = new Ubicacion({
+			nombre: 'Enviado desde Modem'
+		});
+		objSave.save(function(err){
+		 	if(!err){
+		 		console.log('Location saved successfully');
+			}else { console.log('Error saving sended location ' + err); }
+		});
 		res.send('' + distance + '*');
 	});
 

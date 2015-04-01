@@ -3,7 +3,8 @@ var middlewares = require('./middlewares/admin');
 var swig 		= require('swig');
 var mongoose 	= require('mongoose');
 var Ubicacion 	= require('../db/ubicacion');		//Location Schema
-var geolib		= require('geolib');
+var geolib		= require('geolib');				
+var location_test = require('../ubicaciones');
 
 var ExpressServer = function(config){
 	config = config || {};
@@ -75,31 +76,29 @@ var ExpressServer = function(config){
 		res.send(objSave);
 	});
 
-	/************************************************************************** GET distance between two points using geolib.js ****/
+
+	/****************************************************
+	*			Distance between two points				*
+	****************************************************/
+
+	/************************************************************************** GET distance between two points ****/
 	this.expressServer.get('/distance/', function(req, res){
-		var a = geolib.getDistance({
-			latitude: -0.935897, longitude: -78.614034
-		},{
-			latitude: -0.93399, longitude: -78.61416
-		});
-		res.send('Distancia: ' + a + ' mts');
+		var distance = geolib.getDistance({ latitude: location_test.EsquinaElepco.lat, longitude: location_test.EsquinaElepco.lon },
+										  { latitude: location_test.EsquinaJuliana.lat, longitude: location_test.EsquinaJuliana.lon });
+		res.send('Distancia esquina Elepco y Juliana: ' + distance + ' mts');
 	});
 
 	/************************************************************************** GET render view get_distance.html given one point ****/
 	// this.expressServer.get('/get_distance/', function(req, res){
 	// 	res.render('get_distance', {});
 	// });
-//	-0.93399
-//	-78.61416
+
 	/************************************************************************** POST distance between two points given one of them ****/
 	this.expressServer.post('/get_distance/', function(req, res){
 		var lat = req.body.latitud;
 		var lon = req.body.longitud;
-		var distance = geolib.getDistance({
-			latitude: -0.935897, longitude: -78.614034
-		},{
-			latitude: lat, longitude: lon
-		});
+		var distance = geolib.getDistance({ latitude: location_test.LocalHenry.lat, longitude: location_test.LocalHenry.lon },
+										  { latitude: lat, longitude: lon });
 		res.send('Distancia: ' + distance + ' mts');
 	});
 
@@ -107,14 +106,15 @@ var ExpressServer = function(config){
 	this.expressServer.get('/get_distance/', function(req, res){
 		var lat = req.query.lat;
 		var lon = req.query.lon;
-		var distance = geolib.getDistance({
-			latitude: -0.935897, longitude: -78.614034
-		},{
-			latitude: lat, longitude: lon
-		});
-		debugger;
-		res.send('Distancia: ' + distance + ' mts');
+		var distance = geolib.getDistance({ latitude: location_test.LocalHenry.lat, longitude: location_test.LocalHenry.lon },
+										  { latitude: lat, longitude: lon });
+		res.send('' + distance + '*');
 	});
+
+	/****************************************************
+	*				Is point in circle					*
+	****************************************************/
+
 
 };
 module.exports = ExpressServer;

@@ -116,7 +116,7 @@ var ExpressServer = function(config){
 		 		console.log('Location saved successfully');
 			}else { console.log('Error saving sended location ' + err); }
 		});
-		res.send('' + distance + '*');
+		res.send('*' + distance + '-');
 	});
 
 	/****************************************************
